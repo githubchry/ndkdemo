@@ -21,7 +21,9 @@ add_library( # Sets the name of the library.
 
 #每多一个库文件 这里都要添加一段add_library(库名  SHARED  源文件)
 add_library(jnidemo         SHARED      JNIDemo.cpp)
+add_library(dynamic         SHARED      JNIDynamicRegisterDemo.cpp)
 add_library(hello           SHARED      JNIHello.c)
+#注：*.C文件不需要在接口函数前加上extern "C"的声明，*.cpp文件的接口函数声明前都要标注extern "C"
 
 
 #最终生成的.so库文件在这里：app/build/intermediates/cmake/debug/obj/
@@ -33,7 +35,7 @@ add_library(hello           SHARED      JNIHello.c)
 # you want to add. CMake verifies that the library exists before
 # completing its build.
 
-#find_library( lib):在NDK目录下搜索lib, 保存在变量val中。value后面使用的时候：${val}
+#find_library(val lib):在NDK目录下搜索lib, 保存在变量val中。value后面使用的时候：${val}
 find_library( # Sets the name of the path variable.
         log-lib                                   # 依赖的系统so库
 
@@ -54,5 +56,6 @@ target_link_libraries( # Specifies the target library.
         ${log-lib} )
 
 target_link_libraries( jnidemo        ${log-lib} )  #设置要链接的库文件的名称
+target_link_libraries( dynamic        ${log-lib} )  #设置要链接的库文件的名称
 
 

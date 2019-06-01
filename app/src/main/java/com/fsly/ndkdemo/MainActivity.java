@@ -18,6 +18,7 @@ import static java.lang.String.valueOf;
  * */
 public class MainActivity extends AppCompatActivity {
     private JNIDemo jniDemo;
+    private JNIDynamicRegisterDemo jniDynamicRegisterDemo;
     private JNISayHello jniSayHello;
 
     private static final String TAG = "MainActivity";
@@ -31,12 +32,13 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
 
-        jniDemo = new JNIDemo();
         jniSayHello = new JNISayHello();
-
         String text0 = jniSayHello.Say();
         Log.e(TAG, text0);
 
+        Log.e(TAG, "==========================================================================================");
+        //==========================================================================================
+        jniDemo = new JNIDemo();
         String text1 = jniDemo.Sayhello();
         Log.e(TAG, text1);
 
@@ -61,10 +63,49 @@ public class MainActivity extends AppCompatActivity {
          * 下面是C调用java的demo
          */
 
+        Log.e(TAG, "------------------------------------------------------------------------------------------");
         jniDemo.callbackSub();
         jniDemo.callbackHelloFormJava();
         jniDemo.callbackPrintString();
         jniDemo.callbackSayHello();
+
+        //==========================================================================================
+
+        Log.e(TAG, "==========================================================================================");
+        //==========================================================================================
+        jniDynamicRegisterDemo = new JNIDynamicRegisterDemo();
+        String text11 = jniDynamicRegisterDemo.Sayhello();
+        Log.e(TAG, text11);
+
+        String text22 = jniDynamicRegisterDemo.Sayhello("Hello!I am from java!");
+        Log.e(TAG, text22);
+
+        int code1 = jniDynamicRegisterDemo.checkPwd("123455");       //正确：000000
+        Log.e(TAG, valueOf(code1));
+
+        int sum1 = jniDynamicRegisterDemo.add(5,7);
+        Log.e(TAG, valueOf(sum1));
+
+        int array3[] = {1,2,3,4,5};
+        int array4[] = jniDynamicRegisterDemo.increaseArrayElse(array3);     //C里面也改了array1本身 传过去的是地址，改的地址上的数据 所以打印出来都变了
+        for(int i = 0;i<5;i++){
+            Log.e(TAG, "array3["+i+"]="+valueOf(array3[i])+", array3["+i+"]="+valueOf(array4[i]));
+        }
+
+        /**
+         * 以上是java调用C的demo
+         * -------------------------------------------------------------------------
+         * 下面是C调用java的demo
+         */
+        Log.e(TAG, "------------------------------------------------------------------------------------------");
+
+        jniDynamicRegisterDemo.callbackSub();
+        jniDynamicRegisterDemo.callbackHelloFormJava();
+        jniDynamicRegisterDemo.callbackPrintString();
+        jniDynamicRegisterDemo.callbackSayHello();
+
+        Log.e(TAG, "==========================================================================================");
+        //==========================================================================================
     }
 
     /**
